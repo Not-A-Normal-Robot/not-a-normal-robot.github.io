@@ -5,8 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechminOS Pre-Alpha</title>
     <link rel="stylesheet" href="style.css">
+    <noscript>
+        <style>
+            #terminal:before {
+                content: "FATAL: TechminOS requires JavaScript to run, but is disabled or not supported.";
+                font-size: 1rem;
+            }
+            #terminal {
+                color: red;
+                font-size: 0;
+            }
+            #terminal:after {
+                font-size: 1rem;
+            }
+        </style>
+    </noscript>
 </head>
 <body>
-    <script async defer src="script.js"></script>
+    <pre id="terminal">Loading kernel...</pre>
+    <script type="module" src="script.js"></script>
 </body>
 </html>

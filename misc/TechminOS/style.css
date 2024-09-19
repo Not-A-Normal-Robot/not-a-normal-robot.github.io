@@ -10,16 +10,22 @@ body {
     position: fixed;
     background-color: black;
     color: lightgrey;
-    font-size: 13px;
-    padding: 1em;
+    font-size: 1rem;
+    padding: 1rem;
     margin: 0;
     width: 100%; width: 100vw; width: 100dvw;
     height: 100vh; height: 100dvh;
-    overflow: hidden;
     box-sizing: border-box;
     pointer-events: none;
     z-index: -1;
     word-break: break-all;
+    text-wrap: wrap;
+}
+
+@media (max-width: 700px) {
+    #terminal {
+        padding: 0;
+    }
 }
 
 @keyframes blink {
