@@ -14,7 +14,7 @@ function getUsername() {
 export async function login() {
     await sleep(7610);
 
-    terminal.print("\nLogin for dev: ");
+    terminal.print(`\nLogin for ${getDeviceName()}: `);
 
     await sleep(726);
 

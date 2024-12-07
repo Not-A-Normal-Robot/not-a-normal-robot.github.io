@@ -2,7 +2,6 @@
 const { default: init } = await import('./modules/init.js');
 
 try {
-    
     await init();
 } catch (e) {
     if(

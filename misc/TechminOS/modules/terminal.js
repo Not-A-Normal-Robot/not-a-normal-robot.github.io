@@ -1,20 +1,31 @@
 "use strict";
 const { sleep } = await import('./utils.js');
 
-let inputLock = null;
+let isInputting = false;
+let buffer = '';
 
 const terminal = {
     element: document.getElementById('terminal'),
-    print: (text) => { terminal.element.textContent += text },
-    println: (text) => { terminal.element.textContent += text + '\n' },
+    print: (text) => {
+        if(isInputting) {
+            buffer += text;
+        } else {
+            terminal.element.textContent += text
+        }
+    },
+    println: (text) => { terminal.print(text + '\n') },
     clear: () => { terminal.element.textContent = '' },
-    panic: (text) => {
+    panic: /**@param {string} text */ (text, log = true) => {
         terminal.element.classList.add('panic');
 
         terminal.println('FATAL: ' + text);
 
         const err = Error("Panicked with error " + text);
         err.name = "panic";
+
+        if(log) {
+            console.error("[PANIC]", text);
+        }
         throw err;
     },
     type: async (text, avgDelay = 54) => {

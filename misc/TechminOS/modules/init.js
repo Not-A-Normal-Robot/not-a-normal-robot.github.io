@@ -35,44 +35,35 @@ function hasSetUp() {
     return localStorage.getItem('setup') === 'true';
 }
 
-async function init() {
+async function initInner() {
     await startupAnim();
 
     if(!hasSetUp()) {
-        const { setup } = import('./setup.js');
+        const { setup } = await import('./setup.js');
 
         await setup();
     }
 
-    const { login } = import('./login.js');
+    const { login } = await import('./login.js');
 
     login();
+}
 
-    await sleep(7610);
+async function init() {
+    try {
+        await initInner();
+    } catch(e) {
+        /** @type {string} */
+        const message =
+            typeof e === 'string' ? e :
+            (
+                ( typeof e === 'object' && 'message' in e ) ?
+                e.message : "An unknown error was thrown! Please check the console for more information."
+            );
 
-    terminal.print("\nLogin for dev: ");
-
-    await sleep(726);
-
-    await terminal.type("mrz626\n");
-
-    terminal.print("Password for mrz626: ");
-
-    await sleep(1792);
-
-    terminal.println("\n");
-
-    await sleep(926);
-
-    terminal.println("\nWelcome to TechminOS!");
-
-    await sleep(862);
-
-    terminal.println(`Today is ${new Date(Date.now()).toLocaleDateString('en-US')}\n`);
-
-    await sleep(2048);
-
-    terminal.print("mrz626@TechminOS:~$ ");
+        terminal.panic(message);
+        console.error(e);
+    }
 }
 
 export default init;
