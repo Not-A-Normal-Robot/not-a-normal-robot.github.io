@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+:root { color-scheme: dark light }
+		</style>
+		<noscript><style>
+.hide-noscript { display: none !important }
+		</style></noscript>
+		<link rel="icon" id="link-favicon">
+	</head>
+
+	<body>
+		<header>
+			<h1>Weird Tab</h1>
+
+			<p> Make a weird tab with a specified favicon and title! </p>
+
+		<noscript>
+			<strong>JavaScript is disabled but it is required for this web app to function. Try turning it back on.</strong>
+		</noscript>
+		</header>
+
+		<main class="hide-noscript">
+			<section>
+				<h2>Main controls</h2>
+				<label for="inp-title">Title</label> <br>
+				<textarea id="inp-title"></textarea> <br> <br>
+				<label for="inp-favicon">Favicon</label>
+				<input type="file" accept="image/*" id="inp-favicon"></input> <br>
+				<button type="button" onclick="apply()">Apply</button>
+			</section>
+			<section>
+				<h2>Streaming controls</h2>
+				<p>
+				Some browsers show whether or not a site is recording your camera or microphone. This helps emulate that without actually sending or storing the data anywhere.
+				</p>
+				<label for="stream-audio">Fetch audio stream</label>
+				<input type="checkbox" id="stream-audio" checked> <br>
+				<label for="stream-video">Fetch video stream</label>
+				<input type="checkbox" id="stream-video" checked> <br>
+				<br>
+				<button type="button" onclick="toggleStream()">Toggle the stream</button>
+			</section>
+			<section>
+				<h2>Playback controls</h2>
+				<p>
+				Some browsers show whether or not a site is playing audio/video. Below are elements containing looping video/audio.
+				</p>
+				<video src="./1-sec-video.mp4" loop controls style="width: 480px; height: 400px"></video>
+				<audio src="./1-sec-silence.m4a" loop controls></audio>
+			</section>
+		</main>
+
+		<script>
+			let stream = null;
+
+			async function toggleStream() {
+				if (stream != null) {
+					stream.getTracks().forEach(t => t.stop());
+					stream = null;
+					return;
+				}
+				const audio = document.getElementById("stream-audio").checked;
+				const video = document.getElementById("stream-video").checked;
+				stream = await navigator.mediaDevices.getUserMedia({ video, audio });
+			}
+
+			let faviconLink = document.querySelector("link[rel~='icon']");
+
+			function apply() {
+				const title = document.getElementById("inp-title").value;
+				document.title = title;
+
+				const faviconLink = document.getElementById("link-favicon");
+				const faviconInput = document.getElementById("inp-favicon");
+				const file = faviconInput.files[0];
+
+				if (file) {
+					const reader = new FileReader();
+					reader.onload = (e) => {
+						faviconLink.href = e.target.result;
+					};
+					reader.readAsDataURL(file);
+				}
+			}
+		</script>
+	</body>
+
+</html>
+
